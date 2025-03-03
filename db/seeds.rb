@@ -12,14 +12,25 @@ require 'faker'
 puts "Destruction des articles existants..."
 Article.destroy_all
 
+puts "Destruction des utilisateurs existants..."
+User.destroy_all
+
+puts "Création d'un utilisateur de test..."
+user = User.create!(
+  email: "test@example.com",
+  password: "password123",
+  password_confirmation: "password123"
+)
+puts "Utilisateur créé : #{user.email}"
+
 puts "Création de 30 nouveaux articles..."
 30.times do |i|
-  article = Article.create!(
+  article = user.articles.create!(
     title: Faker::Book.title,
     content: Faker::Lorem.paragraphs(number: 3).join("\n\n"),
-    author: Faker::Name.name
+    author: user.email
   )
   puts "Article créé : #{article.title}"
 end
 
-puts "Terminé ! #{Article.count} articles ont été créés."
+puts "Terminé ! #{Article.count} articles ont été créés pour l'utilisateur #{user.email}."

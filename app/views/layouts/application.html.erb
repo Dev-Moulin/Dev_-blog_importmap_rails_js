@@ -34,11 +34,52 @@
               <% end %>
             </li>
           </ul>
+          <ul class="navbar-nav ms-auto">
+            <% if user_signed_in? %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                  <i class="bi bi-person-circle"></i> <%= current_user.email %>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <%= link_to edit_user_registration_path, class: "dropdown-item" do %>
+                    <i class="bi bi-gear"></i> Paramètres
+                  <% end %>
+                  <%= button_to destroy_user_session_path, method: :delete, class: "dropdown-item text-danger", form: { data: { turbo: false } } do %>
+                    <i class="bi bi-box-arrow-right"></i> Déconnexion
+                  <% end %>
+                </ul>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= link_to new_user_registration_path, class: "nav-link" do %>
+                  <i class="bi bi-person-plus"></i> Inscription
+                <% end %>
+              </li>
+              <li class="nav-item">
+                <%= link_to new_user_session_path, class: "nav-link" do %>
+                  <i class="bi bi-box-arrow-in-right"></i> Connexion
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
         </div>
       </div>
     </nav>
 
     <div class="container">
+      <% if notice %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+      <% if alert %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= alert %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      <% end %>
+      
       <%= yield %>
     </div>
 

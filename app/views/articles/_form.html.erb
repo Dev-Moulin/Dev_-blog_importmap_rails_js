@@ -20,11 +20,6 @@
     <%= form.text_area :content, class: "form-control", rows: 5 %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :author, "Auteur", class: "form-label" %>
-    <%= form.text_field :author, class: "form-control" %>
-  </div>
-
   <div class="d-grid gap-2 d-md-flex justify-content-md-end">
     <%= link_to "Retour", articles_path, class: "btn btn-secondary me-md-2" %>
     <%= form.submit "Enregistrer", class: "btn btn-primary" %>

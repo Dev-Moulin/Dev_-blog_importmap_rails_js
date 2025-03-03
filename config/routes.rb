@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   # Définition de la page d'accueil
   root "articles#index"
   

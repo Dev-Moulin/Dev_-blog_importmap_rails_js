@@ -1,8 +1,7 @@
-<%= form_with(model: article) do |form| %>
+<%= form_with(model: article, class: "mb-4") do |form| %>
   <% if article.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(article.errors.count, "error") %> prohibited this article from being saved:</h2>
-
+    <div class="alert alert-danger">
+      <h4><%= pluralize(article.errors.count, "erreur") %> ont empêché cet article d'être sauvegardé :</h4>
       <ul>
         <% article.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,22 +10,23 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :title, style: "display: block" %>
-    <%= form.text_field :title %>
+  <div class="mb-3">
+    <%= form.label :title, "Titre", class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.label :content, style: "display: block" %>
-    <%= form.textarea :content %>
+  <div class="mb-3">
+    <%= form.label :content, "Contenu", class: "form-label" %>
+    <%= form.text_area :content, class: "form-control", rows: 5 %>
   </div>
 
-  <div>
-    <%= form.label :author, style: "display: block" %>
-    <%= form.text_field :author %>
+  <div class="mb-3">
+    <%= form.label :author, "Auteur", class: "form-label" %>
+    <%= form.text_field :author, class: "form-control" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <%= link_to "Retour", articles_path, class: "btn btn-secondary me-md-2" %>
+    <%= form.submit "Enregistrer", class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -1,29 +1,56 @@
-<h1>Articles</h1>
+<% content_for :title, "Liste des articles" %>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Articles</h1>
+  <%= link_to new_article_path, class: "btn btn-success" do %>
+    <i class="bi bi-plus-circle"></i> Nouvel article
+  <% end %>
+</div>
 
 <div data-controller="articles">
-  <button data-action="click->articles#count" id="count-articles" class="btn btn-primary mb-3">Compter les articles</button>
+  <button data-action="click->articles#count" id="count-articles" class="btn btn-primary mb-3">
+    <i class="bi bi-calculator"></i> Compter les articles
+  </button>
   <div data-articles-target="count" id="article-count" class="alert alert-info mb-3"></div>
 
   <div id="articles">
-    <div class="row">
-      <% @articles.each do |article| %>
-        <div class="col-md-4 mb-4 article-item">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title"><%= article.title %></h5>
-              <p class="card-text"><%= truncate(article.content, length: 100) %></p>
-              <p class="card-text"><small class="text-muted">Par <%= article.author %></small></p>
-              <div class="btn-group">
-                <%= link_to "Voir", article, class: "btn btn-primary" %>
-                <%= link_to "Modifier", edit_article_path(article), class: "btn btn-warning" %>
-                <%= button_to "Supprimer", article, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Êtes-vous sûr ?" } } %>
+    <% if @articles.any? %>
+      <div class="row">
+        <% @articles.each do |article| %>
+          <div class="col-md-4 mb-4 article-item">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title"><%= article.title %></h5>
+                <p class="card-text"><%= truncate(article.content, length: 100) %></p>
+                <p class="card-text">
+                  <small class="text-muted">
+                    <i class="bi bi-person"></i> <%= article.author %><br>
+                    <i class="bi bi-calendar"></i> <%= l(article.created_at, format: :long) %>
+                  </small>
+                </p>
+              </div>
+              <div class="card-footer bg-transparent">
+                <div class="btn-group w-100">
+                  <%= link_to article, class: "btn btn-primary" do %>
+                    <i class="bi bi-eye"></i> Voir
+                  <% end %>
+                  <%= link_to edit_article_path(article), class: "btn btn-warning" do %>
+                    <i class="bi bi-pencil"></i> Modifier
+                  <% end %>
+                  <%= button_to article, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet article ?" } } do %>
+                    <i class="bi bi-trash"></i> Supprimer
+                  <% end %>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      <% end %>
-    </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="alert alert-info">
+        <i class="bi bi-info-circle"></i> Aucun article n'a été créé pour le moment.
+        <%= link_to "Créer le premier article", new_article_path, class: "alert-link" %>.
+      </div>
+    <% end %>
   </div>
-</div>
-
-<%= link_to "Nouvel article", new_article_path, class: "btn btn-success mt-3" %> 
+</div> 

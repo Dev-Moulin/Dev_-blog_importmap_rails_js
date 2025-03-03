@@ -1,17 +1,18 @@
-<div id="<%= dom_id article %>">
-  <p>
-    <strong>Title:</strong>
-    <%= article.title %>
-  </p>
+<div id="<%= dom_id article %>" class="card mb-4">
+  <div class="card-body">
+    <h2 class="card-title">
+      <%= article.title %>
+    </h2>
 
-  <p>
-    <strong>Content:</strong>
-    <%= article.content %>
-  </p>
+    <div class="card-text mb-3">
+      <%= simple_format(article.content) %>
+    </div>
 
-  <p>
-    <strong>Author:</strong>
-    <%= article.author %>
-  </p>
-
+    <p class="card-text">
+      <small class="text-muted">
+        Écrit par <%= article.author %><br>
+        <%= l(article.created_at, format: :long) %>
+      </small>
+    </p>
+  </div>
 </div>

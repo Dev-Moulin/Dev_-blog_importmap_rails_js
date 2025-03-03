@@ -1,12 +1,20 @@
-<% content_for :title, "Editing article" %>
+<% content_for :title, "Modifier l'article" %>
 
-<h1>Editing article</h1>
+<div class="row">
+  <div class="col-md-8 offset-md-2">
+    <h1 class="mb-4">Modifier l'article</h1>
 
-<%= render "form", article: @article %>
+    <%= render "form", article: @article %>
+  </div>
+</div>
 
-<br>
-
-<div>
-  <%= link_to "Show this article", @article %> |
-  <%= link_to "Back to articles", articles_path %>
+<div class="mt-3">
+  <div class="btn-group">
+    <%= link_to @article, class: "btn btn-primary" do %>
+      <i class="bi bi-eye"></i> Voir l'article
+    <% end %>
+    <%= link_to articles_path, class: "btn btn-secondary" do %>
+      <i class="bi bi-arrow-left"></i> Retour aux articles
+    <% end %>
+  </div>
 </div>

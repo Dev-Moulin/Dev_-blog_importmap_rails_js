@@ -16,34 +16,38 @@
   <div id="articles">
     <% if @articles.any? %>
       <div class="row">
-        <% @articles.each do |article| %>
-          <div class="col-md-4 mb-4 article-item">
-            <div class="card h-100">
-              <div class="card-body">
-                <h5 class="card-title"><%= article.title %></h5>
-                <p class="card-text"><%= truncate(article.content, length: 100) %></p>
-                <p class="card-text">
-                  <small class="text-muted">
-                    <i class="bi bi-person"></i> <%= article.author %><br>
-                    <i class="bi bi-calendar"></i> <%= l(article.created_at, format: :long) %>
-                  </small>
-                </p>
-              </div>
-              <div class="card-footer bg-transparent">
-                <div class="btn-group w-100">
-                  <%= link_to article, class: "btn btn-primary" do %>
-                    <i class="bi bi-eye"></i> Voir
-                  <% end %>
-                  <%= link_to edit_article_path(article), class: "btn btn-warning" do %>
-                    <i class="bi bi-pencil"></i> Modifier
-                  <% end %>
-                  <%= button_to article, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet article ?" } } do %>
-                    <i class="bi bi-trash"></i> Supprimer
-                  <% end %>
+        <% cache @articles do %>
+          <% @articles.each do |article| %>
+            <% cache article do %>
+              <div class="col-md-4 mb-4 article-item">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <h5 class="card-title"><%= article.title %></h5>
+                    <p class="card-text"><%= truncate(article.content, length: 100) %></p>
+                    <p class="card-text">
+                      <small class="text-muted">
+                        <i class="bi bi-person"></i> <%= article.author %><br>
+                        <i class="bi bi-calendar"></i> <%= l(article.created_at, format: :long) %>
+                      </small>
+                    </p>
+                  </div>
+                  <div class="card-footer bg-transparent">
+                    <div class="btn-group w-100">
+                      <%= link_to article, class: "btn btn-primary" do %>
+                        <i class="bi bi-eye"></i> Voir
+                      <% end %>
+                      <%= link_to edit_article_path(article), class: "btn btn-warning" do %>
+                        <i class="bi bi-pencil"></i> Modifier
+                      <% end %>
+                      <%= button_to article, method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Êtes-vous sûr de vouloir supprimer cet article ?" } } do %>
+                        <i class="bi bi-trash"></i> Supprimer
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            <% end %>
+          <% end %>
         <% end %>
       </div>
     <% else %>

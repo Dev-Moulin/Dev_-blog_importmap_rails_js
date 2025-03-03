@@ -5,11 +5,14 @@ class ArticlesController < ApplicationController
 
   # GET /articles or /articles.json
   def index
-    @articles = Article.all
+    @articles = Rails.cache.fetch("articles_list", expires_in: 5.minutes) do
+      Article.includes(:user).all.to_a
+    end
   end
 
   # GET /articles/1 or /articles/1.json
   def show
+    fresh_when(@article)
   end
 
   # GET /articles/new
@@ -24,10 +27,10 @@ class ArticlesController < ApplicationController
   # POST /articles or /articles.json
   def create
     @article = current_user.articles.build(article_params)
-    @article.author = current_user.email
 
     respond_to do |format|
       if @article.save
+        Rails.cache.delete("articles_list")
         format.html { redirect_to @article, notice: "L'article a été créé avec succès." }
         format.json { render :show, status: :created, location: @article }
       else
@@ -41,6 +44,7 @@ class ArticlesController < ApplicationController
   def update
     respond_to do |format|
       if @article.update(article_params)
+        Rails.cache.delete("articles_list")
         format.html { redirect_to @article, notice: "L'article a été mis à jour avec succès." }
         format.json { render :show, status: :ok, location: @article }
       else
@@ -53,6 +57,7 @@ class ArticlesController < ApplicationController
   # DELETE /articles/1 or /articles/1.json
   def destroy
     @article.destroy!
+    Rails.cache.delete("articles_list")
 
     respond_to do |format|
       format.html { redirect_to articles_path, status: :see_other, notice: "L'article a été supprimé avec succès." }
@@ -63,7 +68,9 @@ class ArticlesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_article
-      @article = Article.find(params[:id])
+      @article = Rails.cache.fetch("article_#{params[:id]}", expires_in: 1.hour) do
+        Article.includes(:user).find(params[:id])
+      end
     end
 
     # Only allow a list of trusted parameters through.

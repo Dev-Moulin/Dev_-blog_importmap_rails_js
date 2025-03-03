@@ -1,5 +1,5 @@
 class Article < ApplicationRecord
-  belongs_to :user
+  belongs_to :user, touch: true
   validates :title, presence: true
   validates :content, presence: true
 
